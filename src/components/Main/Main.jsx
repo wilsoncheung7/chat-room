@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import { makeStyles, Typography, TextField, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
@@ -15,27 +15,31 @@ export default function Main() {
         contents: {
             padding: 20,
         },
-        forms:{
+        forms: {
             position: 'absolute',
             top: '50%',
-            width:'100%',
-            maxWidth:600
+            width: '100%',
+            maxWidth: 600
         }
     }))
 
-    const handleChange=e=>{
+    const handleEmail = e => {
         console.log(e);
-        setEmail({[e.target.id]:e.target.value});
-        setPassword({[e.target.id]:e.target.value});
+        setEmail({ [e.target.id]: e.target.value });
     }
 
-    const handleSubmit=e=>{
+    const handlePassword = e => {
+        console.log(e);
+        setPassword({ [e.target.id]: e.target.value });
+    }
+
+    const handleSubmit = e => {
         e.preventDefault();
         console.log(email);
         console.log(password);
     }
-    const [email,setEmail]=useState('');
-    const [password,setPassword]=useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
     const classes = useStyle();
     return (
         <div className={classes.root}>
@@ -49,7 +53,8 @@ export default function Main() {
                     <TextField
                         // variant='outlined'
                         fullWidth
-                        onChange={handleChange}
+                        onChange={handleEmail}
+                        // value={email}
                         type='email'
                         id='email'
                     />
@@ -59,13 +64,21 @@ export default function Main() {
                     <TextField
                         // variant='outlined'
                         fullWidth
-                        onChange={handleChange}
+                        onChange={handlePassword}
+                        // value={password}
                         type='password'
                         id='password'
                     />
                 </div>
                 <div className={classes.contents}>
-                    <Button color='primary' variant='contained' fullWidth>Login</Button>
+                    <Button
+                        type='submit'
+                        color='primary'
+                        variant='contained'
+                        fullWidth
+                    >
+                        Login
+                    </Button>
                 </div>
                 <Link to='/'>
                     <Button>
