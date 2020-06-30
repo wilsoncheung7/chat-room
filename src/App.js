@@ -2,6 +2,8 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Main from './components/Main';
+import {Route,Switch} from 'react-router-dom';
+import * as ROUTES from './constants/routes';
 
 function App() {
   return (
@@ -22,7 +24,9 @@ function App() {
     //   </header>
     // </div>
     <React.Fragment>
-      <Main/>
+      <Switch>
+        <Route exact path={ROUTES.LANDING} component={Main}/>
+      </Switch>
     </React.Fragment>
   );
 }

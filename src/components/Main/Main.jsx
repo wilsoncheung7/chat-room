@@ -1,5 +1,6 @@
-import React from 'react';
-import { makeStyles, Typography, TextField, } from '@material-ui/core';
+import React,{useState} from 'react';
+import { makeStyles, Typography, TextField, Button } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 export default function Main() {
     const useStyle = makeStyles(theme => ({
@@ -9,35 +10,68 @@ export default function Main() {
             alignItems: 'center',
             position: 'relative',
             minHeight: '30rem',
-            width:'100%'
+            width: '100%'
         },
         contents: {
             padding: 20,
+        },
+        forms:{
+            position: 'absolute',
+            top: '50%',
+            width:'100%',
+            maxWidth:600
         }
     }))
+
+    const handleChange=e=>{
+        console.log(e);
+        setEmail({[e.target.id]:e.target.value});
+        setPassword({[e.target.id]:e.target.value});
+    }
+
+    const handleSubmit=e=>{
+        e.preventDefault();
+        console.log(email);
+        console.log(password);
+    }
+    const [email,setEmail]=useState('');
+    const [password,setPassword]=useState('');
     const classes = useStyle();
     return (
         <div className={classes.root}>
-            <form style={{ position: 'absolute', top: '50%' }}>
+            <form className={classes.forms} onSubmit={handleSubmit}>
                 <Typography variant='h3' component='span'>Simple Chat Room</Typography>
-                <div className={classes.contents}>
+                {/* <div className={classes.contents}>
                     <Typography variant='h5'>Login</Typography>
-                </div>
+                </div> */}
                 <div className={classes.contents}>
                     <Typography variant='h5'>Email</Typography>
                     <TextField
-                    variant='outlined'
-                    fullWidth
-                     />
+                        // variant='outlined'
+                        fullWidth
+                        onChange={handleChange}
+                        type='email'
+                        id='email'
+                    />
                 </div>
                 <div className={classes.contents}>
                     <Typography variant='h5'>Password</Typography>
                     <TextField
-                    variant='outlined'
-                    fullWidth
-                     />
+                        // variant='outlined'
+                        fullWidth
+                        onChange={handleChange}
+                        type='password'
+                        id='password'
+                    />
                 </div>
-                <Typography>Sign up</Typography>
+                <div className={classes.contents}>
+                    <Button color='primary' variant='contained' fullWidth>Login</Button>
+                </div>
+                <Link to='/'>
+                    <Button>
+                        Sign up
+                    </Button>
+                </Link>
             </form>
         </div>
     )
