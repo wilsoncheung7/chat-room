@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { makeStyles, Typography, TextField, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 
-export default function Main() {
+export default function SignUp() {
     const useStyle = makeStyles(theme => ({
         root: {
             display: 'flex',
@@ -22,6 +22,9 @@ export default function Main() {
             maxWidth: 600
         }
     }))
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [userName, setUserName] = useState('');
 
     const handleEmail = e => {
         console.log(e);
@@ -33,13 +36,18 @@ export default function Main() {
         setPassword({ [e.target.id]: e.target.value });
     }
 
+    const handleUserName = e => {
+        console.log(e);
+        setUserName({ [e.target.id]: e.target.value });
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
+        console.log(userName);
         console.log(email);
         console.log(password);
     }
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+
     const classes = useStyle();
     return (
         <div className={classes.root}>
@@ -48,6 +56,17 @@ export default function Main() {
                 {/* <div className={classes.contents}>
                     <Typography variant='h5'>Login</Typography>
                 </div> */}
+                <div className={classes.contents}>
+                    <Typography variant='h5'>User Name</Typography>
+                    <TextField
+                        // variant='outlined'
+                        fullWidth
+                        onChange={handleUserName}
+                        // value={password}
+                        type='text'
+                        id='username'
+                    />
+                </div>
                 <div className={classes.contents}>
                     <Typography variant='h5'>Email</Typography>
                     <TextField
@@ -77,12 +96,12 @@ export default function Main() {
                         variant='contained'
                         fullWidth
                     >
-                        Login
+                        Sign Up
                     </Button>
                 </div>
                 <Link to='/'>
                     <Button>
-                        Sign up
+                        Back to main page
                     </Button>
                 </Link>
             </form>
