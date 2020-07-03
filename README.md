@@ -67,3 +67,6 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 "# chat-room" 
+
+### Solution to Element type is invalid of react-redux-firebase
+https://stackoverflow.com/questions/57565094/how-to-fix-element-type-is-invalid-when-connecting-firebase-to-react-applicat
