@@ -2,8 +2,11 @@ import React, { useState } from 'react';
 import { makeStyles, Typography, TextField, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
+import { connect } from 'react-redux';
+import { signIn } from '../../store/actions/authActions';
+import firebase from 'firebase'
 
-export default function SignIn() {
+function SignIn(props) {
     const useStyle = makeStyles(theme => ({
         root: {
             display: 'flex',
@@ -24,24 +27,30 @@ export default function SignIn() {
         }
     }))
 
-    const handleEmail = e => {
-        console.log(e);
-        setEmail({ [e.target.id]: e.target.value });
-    }
+    const [state, setState] = useState({
+        userName: '',
+        email: '',
+        password: '',
+    })
 
-    const handlePassword = e => {
-        console.log(e);
-        setPassword({ [e.target.id]: e.target.value });
+    const handleChange = e => {
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(email);
-        console.log(password);
+        // console.log(email);
+        // console.log(password);
+        props.signIn(state);
     }
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    // const [email, setEmail] = useState('');
+    // const [password, setPassword] = useState('');
     const classes = useStyle();
+    const { authError } = props;
+    console.log(props);
     return (
         <div className={classes.root}>
             <form className={classes.forms} onSubmit={handleSubmit}>
@@ -54,7 +63,7 @@ export default function SignIn() {
                     <TextField
                         // variant='outlined'
                         fullWidth
-                        onChange={handleEmail}
+                        onChange={handleChange}
                         // value={email}
                         type='email'
                         id='email'
@@ -65,7 +74,7 @@ export default function SignIn() {
                     <TextField
                         // variant='outlined'
                         fullWidth
-                        onChange={handlePassword}
+                        onChange={handleChange}
                         // value={password}
                         type='password'
                         id='password'
@@ -86,7 +95,24 @@ export default function SignIn() {
                         Sign up
                     </Button>
                 </Link>
+                <div className="red-text center">
+                    {authError ? <p>{authError}</p> : null}
+                </div>
             </form>
         </div>
     )
 }
+
+const mapStateToProps = state => {
+    return {
+        authError: state.auth.authError,
+    }
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        signIn: credentials => dispatch(signIn(credentials)),
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignIn)

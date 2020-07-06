@@ -1,5 +1,6 @@
 import React from 'react';
 import { AppBar, Toolbar, Typography, makeStyles } from '@material-ui/core';
+import {connect} from 'react-redux';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -16,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-export default function NavBar() {
+function NavBar() {
     const classes = useStyles();
     return (
         <div className={classes.root}>
@@ -30,3 +31,12 @@ export default function NavBar() {
         </div>
     )
 }
+
+const mapStateToProps=state=>{
+    console.log(state)
+    return{
+        
+    }
+}
+
+export default connect(mapStateToProps)(NavBar)

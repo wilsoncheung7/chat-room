@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
 import { makeStyles, Typography, TextField, Button } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { getFirebase } from 'react-redux-firebase';
+import {connect} from 'react-redux';
+import {signUp} from '../../store/actions/authActions';
 
-export default function SignUp() {
+function SignUp(props) {
     const useStyle = makeStyles(theme => ({
         root: {
             display: 'flex',
@@ -22,33 +25,36 @@ export default function SignUp() {
             maxWidth: 600
         }
     }))
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [userName, setUserName] = useState('');
+    const firebase=getFirebase();
+    const firestore=firebase.firestore();
+    const [state,setState]=useState({
+        userName:'',
+        email:'',
+        password:'',
+    })
 
-    const handleEmail = e => {
-        console.log(e);
-        setEmail({ [e.target.id]: e.target.value });
-    }
-
-    const handlePassword = e => {
-        console.log(e);
-        setPassword({ [e.target.id]: e.target.value });
-    }
-
-    const handleUserName = e => {
-        console.log(e);
-        setUserName({ [e.target.id]: e.target.value });
+    const handleChange = e => {
+        setState({
+            ...state,
+            [e.target.name]:e.target.value
+        })
     }
 
     const handleSubmit = e => {
         e.preventDefault();
-        console.log(userName);
-        console.log(email);
-        console.log(password);
+        // firebase.auth().createUserWithEmailAndPassword(
+        //     state.email,
+        //     state.password
+        // ).then(res=>{
+        //     return firestore.collection('Users').doc(res.user.uid).set({
+        //         userName:state.userName,
+        //     })
+        // })
+        props.signUp(state)
     }
 
     const classes = useStyle();
+    const { authError } = props;
     return (
         <div className={classes.root}>
             <form className={classes.forms} onSubmit={handleSubmit}>
@@ -61,10 +67,10 @@ export default function SignUp() {
                     <TextField
                         // variant='outlined'
                         fullWidth
-                        onChange={handleUserName}
+                        onChange={handleChange}
                         // value={password}
                         type='text'
-                        id='username'
+                        name='username'
                     />
                 </div>
                 <div className={classes.contents}>
@@ -72,10 +78,10 @@ export default function SignUp() {
                     <TextField
                         // variant='outlined'
                         fullWidth
-                        onChange={handleEmail}
+                        onChange={handleChange}
                         // value={email}
                         type='email'
-                        id='email'
+                        name='email'
                     />
                 </div>
                 <div className={classes.contents}>
@@ -83,10 +89,10 @@ export default function SignUp() {
                     <TextField
                         // variant='outlined'
                         fullWidth
-                        onChange={handlePassword}
+                        onChange={handleChange}
                         // value={password}
                         type='password'
-                        id='password'
+                        name='password'
                     />
                 </div>
                 <div className={classes.contents}>
@@ -105,6 +111,21 @@ export default function SignUp() {
                     </Button>
                 </Link>
             </form>
+            {authError ? <p>{authError}</p> : null}
         </div>
     )
 }
+
+const mapStateToProps=state=>{
+    return{
+        auth:state.firebase.auth
+    }
+}
+
+const mapDispatchToProps=dispatch=>{
+    return{
+        signUp:newUser=>dispatch(signUp(newUser))
+    }
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(SignUp);
